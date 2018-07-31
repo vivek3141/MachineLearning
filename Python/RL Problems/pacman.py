@@ -1,6 +1,5 @@
 import numpy as np
 import gym
-import gym_pull
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten
@@ -11,8 +10,8 @@ from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
 
-gym_pull.pull('github.com/ppaquette/gym-super-mario')
-env = gym.make('ppaquette/SuperMarioBros-1-1-v0')
+
+env = gym.make('SpaceInvaders-v0')
 np.random.seed(123)
 env.seed(123)
 nb_actions = env.action_space.n
@@ -29,7 +28,8 @@ dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmu
                target_model_update=1e-2, policy=policy)
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
-dqn.fit(env, nb_steps=5000, visualize=True, verbose=2)
-dqn.test(env, nb_episodes=5, visualize=True)
+dqn.fit(env, nb_steps=1000, visualize=True, verbose=2)
+dqn.save_weights("./space_invaders.model")
+dqn.test(env, nb_episodes=5, visualize=True, verbose=2)
 
 
